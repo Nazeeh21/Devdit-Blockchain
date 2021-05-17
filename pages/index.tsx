@@ -1,15 +1,18 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import { Layout } from '../components/Layout';
 
 export default function Home() {
   return (
-    <div className="container">
+    <div className='container'>
       <Head>
         <title>Devdit</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
 
       <main>
-        <div>Devdit in blockchain</div>
+        <Layout>
+          <div>Devdit in blockchain</div>
+        </Layout>
       </main>
 
       <style jsx>{`
@@ -21,7 +24,6 @@ export default function Home() {
         main {
           padding: 0rem 0;
         }
-
       `}</style>
 
       <style jsx global>{`
@@ -39,5 +41,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
+  );
 }
