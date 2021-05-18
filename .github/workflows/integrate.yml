@@ -25,14 +25,14 @@ jobs:
       - run: yarn
       - run: yarn build
 
-  test_contract:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-latest
-    name: Contract Test
-    steps: 
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with: 
-          node-version: 14
-      - run: yarn
-      - run: yarn test
+  # test_contract:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  #   runs-on: ubuntu-latest
+  #   name: Contract Test
+  #   steps: 
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v1
+  #       with: 
+  #         node-version: 14
+  #     - run: yarn
+  #     - run: yarn test
