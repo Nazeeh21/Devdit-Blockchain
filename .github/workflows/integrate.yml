@@ -11,9 +11,9 @@ on:
 
 jobs:
   build_frontend:
-    defaults:
-      run:
-        working-directory: ./
+    # defaults:
+      # run:
+      #   working-directory: ./
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Frontend Test
@@ -26,9 +26,9 @@ jobs:
       - run: yarn build
 
     test_contract:
-    defaults:
-      run:
-        working-directory: ./
+    # defaults:
+      # run:
+        # working-directory: ./
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Contract Test
