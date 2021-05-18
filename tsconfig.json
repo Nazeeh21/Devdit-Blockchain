@@ -30,7 +30,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "ethereum/compile.ts"  ],
   "exclude": [
     "node_modules"
   ]
