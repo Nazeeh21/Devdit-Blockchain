@@ -25,10 +25,7 @@ jobs:
       - run: yarn
       - run: yarn build
 
-    test_contract:
-    # defaults:
-      # run:
-        # working-directory: ./
+  test_contract:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Contract Test
