@@ -1,4 +1,4 @@
-pragma solidity ^0.7.6;
+pragma solidity ^0.4.17;
 
 // import "hardhat/console.sol";
 
@@ -8,17 +8,21 @@ contract PostFactory {
     mapping(address => string) public users;
     address[] public deployedPosts;
     
-    constructor() public {
-        manager = msg.sender;
+    // constructor() public {
+    //     manager = msg.sender;
+    // }
+    
+    function PostFactory() public {
+      manager = msg.sender;
     }
     
-    function registerUser(string username) public {
+    function registerUser(string memory username) public {
         require(!isUserRegistered[msg.sender]);
         users[msg.sender] = username;
         isUserRegistered[msg.sender] = true;
     }
     
-    function getUsername() public view returns(string) {
+    function getUsername() public view returns(string memory) {
         address currentAddress = msg.sender;
         require(isUserRegistered[currentAddress]);
         
@@ -29,7 +33,7 @@ contract PostFactory {
         return isUserRegistered[msg.sender];
     }
     
-    function deployPost(string postTitle, string postBody) public {
+    function deployPost(string memory postTitle, string memory postBody) public {
         require(isUserRegistered[msg.sender]);
         address newPost = new Post(msg.sender, postTitle, postBody, users[msg.sender], manager);
         deployedPosts.push(newPost);
@@ -59,7 +63,16 @@ contract Post {
     uint public votes;
     mapping(address => bool) public voters;
     
-    constructor(address postCreator, string postTitle, string postBody, string user, address manager) public {
+    // constructor(address postCreator, string memory postTitle, string memory postBody, string memory user, address manager) public {
+    //     creator = postCreator;
+    //     title = postTitle;
+    //     body = postBody;
+    //     votes = 0;
+    //     username = user;
+    //     factoryManager = manager;
+    // }
+    
+    function Post(address postCreator, string memory postTitle, string memory postBody, string memory user, address manager) public {
         creator = postCreator;
         title = postTitle;
         body = postBody;
@@ -67,8 +80,8 @@ contract Post {
         username = user;
         factoryManager = manager;
     }
-    
-    function createComment(string commentText, string user) public {
+
+    function createComment(string memory commentText, string memory user) public {
         Comment memory newComment = Comment({
             creator: msg.sender,
             text: commentText,
@@ -104,16 +117,16 @@ contract Post {
         
     }
     
-    function deleteComment(uint index, address creator) public {
+    function deleteComment(uint index, address memory creator) public {
         require(msg.sender == factoryManager || msg.sender == creator);
         delete comments[index];
     }
     
-    function getPostSummary() public view returns(string, string, string, uint, uint) {
+    function getPostSummary() public view returns(string memory, string memory, string memory, uint, uint) {
         return (username, title, body, votes, comments.length);
     }
     
-    function getCommentSummary(uint commentIndex) public view returns(string, string, uint) {
+    function getCommentSummary(uint commentIndex) public view returns(string memory, string memory, uint) {
         Comment storage comment = comments[commentIndex];
         return (comment.username, comment.text, comment.votes);
     }
