@@ -6,7 +6,7 @@ contract PostFactory {
     mapping(address => string) public users;
     address[] public deployedPosts;
     
-    function PostFactory() public {
+    constructor() public {
         manager = msg.sender;
     }
     
@@ -57,7 +57,7 @@ contract Post {
     uint public votes;
     mapping(address => bool) public voters;
     
-    function Post(address postCreator, string postTitle, string postBody, string user, address manager) public {
+    constructor(address postCreator, string postTitle, string postBody, string user, address manager) public {
         creator = postCreator;
         title = postTitle;
         body = postBody;
