@@ -36,8 +36,6 @@ describe('PostFactory', () => {
   });
 
   it('check manager of the Post Factory', async () => {
-    const manager = await postFactory.manager();
-    console.log(manager);
     // @ts-ignore
     expect(await postFactory.manager()).to.equal(owner.address);
   });
@@ -62,6 +60,21 @@ describe('PostFactory', () => {
 
     // console.log('Post: ', post);
   });
+
+  it('Upvoting and Downvoting a post', async () => {
+    const beforeVoting = await post.votes()
+    expect(beforeVoting.toNumber()).to.equal(0)
+
+    // upvoting
+    await post.votePost()
+    const afterUpVote = await post.votes()
+    expect(afterUpVote.toNumber()).to.equal(1)
+
+    // downvoting
+    await post.votePost()
+    const afterDownVote = await post.votes()
+    expect(afterDownVote.toNumber()).to.equal(0)
+  })
 
   it('Create Comment, upVote and downVote it', async () => {
     const commentText = 'comment1';
@@ -92,4 +105,37 @@ describe('PostFactory', () => {
     const downVotes = await post.getCommentSummary(0);
     expect(downVotes[2].toNumber()).to.equal(0);
   });
+
+  it('Delete Post', async () => {
+    const initialDeployedPosts = await postFactory.deployedPosts(0)
+    // console.log(initialDeployedPosts);
+    
+    const postCreator = await post.creator();
+    // console.log(postCreator);
+
+    await postFactory.deletePost(0, postCreator);
+    
+    const finalDeployedPosts = await postFactory.deployedPosts(0)
+
+    expect(finalDeployedPosts).to.not.equal(initialDeployedPosts);
+    
+  })
+
+  it('Delete Comment', async () => {
+    const commentText = 'comment1';
+    await post.createComment(commentText, username);
+
+    const initialComment = await post.comments(0)
+    // console.log(initialComment);
+    
+    await post.deleteComment(0, initialComment[0]);
+
+    // const commentsLength = await post.getCommentsCount();
+
+    const finalComment = await post.comments(0);
+
+    // console.log(finalComment);
+    
+    expect(finalComment).to.not.equal(initialComment);
+  })
 });
