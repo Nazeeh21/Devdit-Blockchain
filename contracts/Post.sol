@@ -117,8 +117,8 @@ contract Post {
         
     }
     
-    function deleteComment(uint index, address creator) public {
-        require(msg.sender == factoryManager || msg.sender == creator);
+    function deleteComment(uint index, address _creator) public {
+        require(msg.sender == factoryManager || msg.sender == _creator);
         delete comments[index];
     }
     
