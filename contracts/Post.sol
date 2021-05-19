@@ -43,6 +43,14 @@ contract PostFactory {
         require(msg.sender == manager || msg.sender == creator);
         delete deployedPosts[index];
     }
+
+    function getDeployedPostsLength() public view returns(uint) {
+        return deployedPosts.length;
+    }
+    
+    function getDeployedPosts() public view returns (address[]) {
+    return deployedPosts;
+  }
 }
 
 contract Post {

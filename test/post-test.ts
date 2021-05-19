@@ -5,7 +5,7 @@ import { expect } from 'chai';
 describe('PostFactory', () => {
   // let accounts: Signer[]
   // @ts-ignore
-  let PostFactory, postFactory: any, owner, addr1, addr2;
+  let PostFactory, postFactory: any, owner, addr1, addr2, username: string;
 
   beforeEach(async () => {
     // accounts = await ethers.getSigners();
@@ -15,7 +15,9 @@ describe('PostFactory', () => {
     postFactory = await PostFactory.deploy();
     [owner, addr1, addr2] = await ethers.getSigners();
     // console.log(addr1.address);
-    console.log('owner: ', owner.address);
+    // console.log('owner: ', owner.address);
+    username = 'user1';
+    await postFactory.registerUser(username);
   });
   it('check manager of the Post Factory', async () => {
     const manager = await postFactory.manager();
@@ -25,13 +27,26 @@ describe('PostFactory', () => {
   });
 
   it('register user', async () => {
-    const username = 'user1';
-    await postFactory.registerUser(username);
-
     const isRegistered = await postFactory.isRegistered();
     expect(isRegistered).to.equal(true);
 
     const getUsername = await postFactory.getUsername();
     expect(getUsername).to.equal(username);
   });
+
+  it('Deploy Post', async() => {
+    const title = 'title'
+    const body = 'body'
+
+    await postFactory.deployPost(title, body)
+    const length = await postFactory.getDeployedPostsLength()
+
+    // console.log(length.toNumber());
+    expect(length.toNumber()).to.equal(1);
+
+    const [postAddress] = await postFactory.getDeployedPosts();
+    console.log('postAddress: ', postAddress)
+    expect(postAddress).to.not.be.null;
+    
+  })
 });
