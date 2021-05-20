@@ -13,6 +13,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "dotenv": "^9.0.2",
     "framer-motion": "^4",
     "next": "^10.0.0",
     "react": "17.0.1",

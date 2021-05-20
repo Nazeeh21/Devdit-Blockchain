@@ -1,3 +1,5 @@
+import { config as dotEnvConfig } from 'dotenv';
+dotEnvConfig();
 import '@nomiclabs/hardhat-waffle';
 import { HardhatUserConfig } from 'hardhat/types';
 import { task } from 'hardhat/config';
@@ -13,6 +15,9 @@ task('accounts', 'Prints the list of accounts', async (_args, hre) => {
   }
 });
 
+const INFURA_API_KEY = process.env.INFURA_API_KEY;
+const ACCOUNT_PRIVATE_KEY = process.env.ACCOUNT_PRIVATE_KEY;
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -21,6 +26,14 @@ task('accounts', 'Prints the list of accounts', async (_args, hre) => {
  */
 
 const config: HardhatUserConfig = {
+  defaultNetwork: 'rinkeby',
+  networks: {
+    hardhat: {},
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
+      accounts: [ACCOUNT_PRIVATE_KEY!]
+    }
+  },
   solidity: {
     compilers: [
       {
@@ -33,6 +46,11 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    artifacts: "./artifacts"
   },
 };
 
