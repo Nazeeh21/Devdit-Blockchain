@@ -33,7 +33,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "hardhat.config.ts"  ],
+, "hardhat.config.ts", "ethereum/web3.js"  ],
   "exclude": [
     "node_modules"
   ],
