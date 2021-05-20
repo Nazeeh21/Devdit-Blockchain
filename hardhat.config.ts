@@ -15,8 +15,10 @@ task('accounts', 'Prints the list of accounts', async (_args, hre) => {
   }
 });
 
-const INFURA_API_KEY = process.env.INFURA_API_KEY;
-const ACCOUNT_PRIVATE_KEY = process.env.ACCOUNT_PRIVATE_KEY;
+const INFURA_API_KEY = process.env.INFURA_API_KEY || '';
+const ACCOUNT_PRIVATE_KEY =
+  process.env.ACCOUNT_PRIVATE_KEY ||
+  '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3'; // well known private key;
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -31,8 +33,8 @@ const config: HardhatUserConfig = {
     hardhat: {},
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [ACCOUNT_PRIVATE_KEY!]
-    }
+      accounts: [ACCOUNT_PRIVATE_KEY!],
+    },
   },
   solidity: {
     compilers: [
@@ -48,9 +50,9 @@ const config: HardhatUserConfig = {
     ],
   },
   paths: {
-    sources: "./contracts",
-    tests: "./test",
-    artifacts: "./artifacts"
+    sources: './contracts',
+    tests: './test',
+    artifacts: './artifacts',
   },
 };
 
