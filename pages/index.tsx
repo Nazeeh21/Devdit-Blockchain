@@ -1,7 +1,13 @@
 import Head from 'next/head';
 import { Layout } from '../components/Layout';
+import PostFactory from '../ethereum/PostFactory';
 
-export default function Home() {
+interface HomeProps {
+  manager: String;
+  isRegistered: Boolean
+};
+
+const Home = ({ manager, isRegistered }: HomeProps) => {
   return (
     <div className='container'>
       <Head>
@@ -12,6 +18,8 @@ export default function Home() {
       <main>
         <Layout>
           <div>Devdit in blockchain</div>
+          <div>Manager: {manager}</div>
+          <div>is Current User Registered: {`${isRegistered}`}</div>
         </Layout>
       </main>
 
@@ -42,4 +50,16 @@ export default function Home() {
       `}</style>
     </div>
   );
-}
+};
+
+Home.getInitialProps = async ({}) => {
+  // @ts-ignore
+  const manager = await PostFactory.manager();
+  const isRegistered = await PostFactory.isRegistered()
+  // console.log(isRegistered);
+  
+  // console.log('manager: ', manager);
+  return { manager, isRegistered };
+};
+
+export default Home;
