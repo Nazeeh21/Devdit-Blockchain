@@ -26,7 +26,7 @@ const ACCOUNT_PRIVATE_KEY = process.env.ACCOUNT_PRIVATE_KEY;
  */
 
 const config: HardhatUserConfig = {
-  defaultNetwork: 'rinkeby',
+  defaultNetwork: 'hardhat',
   networks: {
     hardhat: {},
     rinkeby: {
