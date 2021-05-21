@@ -1,12 +1,16 @@
 import React from 'react';
+import { Navbar } from './Navbar';
+import { Wrapper, WrapperVariant } from './Wrapper';
 
-interface LayoutProps {}
+interface LayoutProps {
+  variant?: WrapperVariant;
+}
 
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
   return (
     <div>
-      testing workflow
-      {children}
+      <Navbar />
+      <Wrapper variant={variant}>{children}</Wrapper>
     </div>
   );
 };
