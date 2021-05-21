@@ -1,17 +1,19 @@
 import { Heading } from '@chakra-ui/layout';
-import React from 'react'
+import React from 'react';
+import Comments from '../../components/Comments';
 import CreateComment from '../../components/CreateComment';
 import { Layout } from '../../components/Layout';
 import PostContract from '../../ethereum/Post';
-import { Post } from '../../utils/types';
+import { Comment, Post } from '../../utils/types';
 
 interface PostProps {
-postSummary: Post;
+  postSummary: Post;
+  comments?: Comment[];
 }
 
-const Index = ({postSummary}: PostProps) => {
-  
-    return (<Layout>
+const Index = ({ postSummary, comments }: PostProps) => {
+  return (
+    <Layout>
       <Heading mb={4}>{postSummary[1]}</Heading>
       {postSummary[2]}
       {/* <Box mt={4}>
@@ -31,22 +33,35 @@ const Index = ({postSummary}: PostProps) => {
           </Button>
         </Box>
       )} */}
-      {/* <Comments pageProps /> */}
+      <Comments comments={comments} />
       <CreateComment />
-    </Layout>);
-}
+    </Layout>
+  );
+};
 
-// @ts-ignore
-Index.getInitialProps = async({ query }) => {
-  const address = query.id
+Index.getInitialProps = async ({ query }: any) => {
+  const address = query.id;
   // console.log('address: ', address);
-  
+
   const post = PostContract(address);
 
-  const postSummary = await post.methods.getPostSummary().call()
+  const postSummary = await post.methods.getPostSummary().call();
   console.log(postSummary);
 
-  return {postSummary}
-}
+  const commentsCount = await post.methods.getCommentsCount().call();
+
+  const comments = await Promise.all(
+    Array(+commentsCount)
+      // @ts-ignore
+      .fill()
+      .map((_, index) => {
+        return post.methods.getCommentSummary(index).call();
+      })
+  );
+  console.log('comments: ', comments);
+  
+
+  return { postSummary, comments };
+};
 
 export default Index;

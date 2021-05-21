@@ -42,7 +42,7 @@ const index: React.FC<indexProps> = ({}) => {
               mt={4}
               type='submit'
               isLoading={isSubmitting}
-              colorScheme='whiteAlpha'
+              colorScheme='teal'
             >
               Register
             </Button>

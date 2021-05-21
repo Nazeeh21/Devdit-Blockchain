@@ -7,7 +7,7 @@ import NextLink from 'next/link';
 // @ts-ignore
 import web3 from '../ethereum/web3';
 import { Post } from '../utils/types';
-import { Box, Flex, Heading, Link, Text } from '@chakra-ui/layout';
+import { Box, Flex, Heading, Link, Stack, Text } from '@chakra-ui/layout';
 
 interface HomeProps {
   posts?: Post[];
@@ -19,13 +19,13 @@ const Home = ({ posts, postAddresses }: HomeProps) => {
   useEffect(() => {
     async function getAccounts() {
       // @ts-ignore
-      let accounts = await web3.eth.getAccounts();
-      console.log(accounts[0]);
-      const isUserRegistered = await PostFactory.methods
-        .isUserRegistered(accounts[0])
-        .call();
-      console.log('isUserRegistered: ', isUserRegistered);
-      localStorage.setItem('isUserRegistered', isUserRegistered);
+      // let accounts = await web3.eth.getAccounts();
+      // console.log(accounts[0]);
+      // const isUserRegistered = await PostFactory.methods
+      //   .isUserRegistered(accounts[0])
+      //   .call();
+      // console.log('isUserRegistered: ', isUserRegistered);
+      // localStorage.setItem('isUserRegistered', isUserRegistered);
 
 
   // const is_Registered = await PostFactory.methods.isRegistered().call();
@@ -46,10 +46,11 @@ const Home = ({ posts, postAddresses }: HomeProps) => {
 
       <main>
         <Layout>
+          <Stack mt={8} mb={2}>
           {posts?.map((post, index) => {
-            return (<Flex key={index} p={5} shadow='md' borderWidth='1px'>
+            return (<Flex mb={2} key={index} p={5} shadow='md' borderWidth='1px'>
               <Box>
-                {console.log(post)}
+                {/* {console.log(post)} */}
                 <NextLink href='/post/[id]' as={`/post/${postAddresses && postAddresses[0]}`}>
                     <Link>
                       <Heading fontSize='xl'>{post[1]}</Heading>
@@ -60,6 +61,7 @@ const Home = ({ posts, postAddresses }: HomeProps) => {
               </Box>
             </Flex>)
           })}
+          </Stack>
         </Layout>
       </main>
 
