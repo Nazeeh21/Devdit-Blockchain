@@ -1,5 +1,6 @@
 import { Heading } from '@chakra-ui/layout';
 import React from 'react'
+import CreateComment from '../../components/CreateComment';
 import { Layout } from '../../components/Layout';
 import PostContract from '../../ethereum/Post';
 import { Post } from '../../utils/types';
@@ -30,8 +31,8 @@ const Index = ({postSummary}: PostProps) => {
           </Button>
         </Box>
       )} */}
-      {/* <Comments pageProps />
-      <CreateComment pageProps /> */}
+      {/* <Comments pageProps /> */}
+      <CreateComment />
     </Layout>);
 }
 

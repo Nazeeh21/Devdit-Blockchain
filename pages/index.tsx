@@ -24,11 +24,18 @@ const Home = ({ posts, postAddresses }: HomeProps) => {
       const isUserRegistered = await PostFactory.methods
         .isUserRegistered(accounts[0])
         .call();
-      console.log(isUserRegistered);
+      console.log('isUserRegistered: ', isUserRegistered);
       localStorage.setItem('isUserRegistered', isUserRegistered);
+
+
+  // const is_Registered = await PostFactory.methods.isRegistered().call();
+
+  // console.log('is_Registered: ', is_Registered);
     }
     getAccounts();
   }, []);
+
+  
 
   return (
     <div className='container'>
@@ -93,6 +100,15 @@ Home.getInitialProps = async () => {
 
   const postAddresses = await PostFactory.methods.getDeployedPosts().call();
   
+  
+  // const is_Registered = await PostFactory.methods.isRegistered().call();
+
+  // console.log('is_Registered: ', is_Registered);
+  
+  // const username = await PostFactory.methods.getUsername().call();
+
+  // console.log(username);
+
   const posts = await Promise.all(
     postAddresses.map((address: any) => {
       const post = PostContract(address);
