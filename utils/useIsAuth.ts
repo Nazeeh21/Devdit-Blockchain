@@ -27,9 +27,12 @@ export const useIsAuth = () => {
               const username = await PostFactory.methods.users(accounts[0]).call();
               localStorage.setItem('isUserRegistered', res);
               localStorage.setItem('username', username);
-              router.reload();
-            } else {
-              router.push('/register');
+              // router.reload();
+              if (typeof router.query.next === 'string') {
+                router.push(router.query.next);
+              } else {
+                router.push('/');
+              }
             }
           })
           .catch((e) => console.log(e));
