@@ -14,7 +14,7 @@ const Comments: React.FC<CommentsProps> = ({ comments }) => {
     return (
       <Wrapper>
         <Heading mb={4}>Comments</Heading>
-        <div>You got no comments, query failed for some reason</div>
+        <div>You got no comments or query failed for some reason</div>
       </Wrapper>
     );
   }
@@ -28,7 +28,7 @@ const Comments: React.FC<CommentsProps> = ({ comments }) => {
         {comments!.map((comment, index) => (
           <Flex key={index} p={5} shadow='md' borderWidth='1px'>
             <Box>
-              {console.log(comment)}
+              {/* {console.log(comment)} */}
               <Text>{comment[1]}</Text>
               <Text mt={4}>Posted by: {comment[0]}</Text>
             </Box>
@@ -56,7 +56,7 @@ Comments.getInitialProps = async (query: any) => {
         return post.methods.getCommentSummary(index);
       })
   );
-  console.log('comments: ', comments);
+  // console.log('comments: ', comments);
 
   return { comments };
 };

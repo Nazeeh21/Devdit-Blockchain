@@ -17,12 +17,12 @@ export const useIsAuth = () => {
         const getIsUserRegistered = async () => {
           // @ts-ignore
           accounts = await web3.eth.getAccounts();
-          console.log(accounts[0]);
+          // console.log(accounts[0]);
           return await PostFactory.methods.isUserRegistered(accounts[0]).call();
         };
         getIsUserRegistered()
           .then(async(res) => {
-            console.log('isUserRegistered: ', res);
+            // console.log('isUserRegistered: ', res);
             if (res) {
               const username = await PostFactory.methods.users(accounts[0]).call();
               localStorage.setItem('isUserRegistered', res);

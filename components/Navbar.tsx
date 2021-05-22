@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
           let accounts = await web3.eth.getAccounts();
           // console.log(accounts[0]);
 
-          console.log('getting username');
+          // console.log('getting username');
           const username = await PostFactory.methods.users(accounts[0]).call();
 
           // console.log('username: ', username);
@@ -34,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
         };
         getUser()
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             setUsername(res);
             localStorage.setItem('username', res);
           })
@@ -46,11 +46,11 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
   const loginHandler = async () => {
     // @ts-ignore
     let accounts = await web3.eth.getAccounts();
-    console.log(accounts[0]);
+    // console.log(accounts[0]);
     const isUserRegistered = await PostFactory.methods
       .isUserRegistered(accounts[0])
       .call();
-    console.log('isUserRegistered: ', isUserRegistered);
+    // console.log('isUserRegistered: ', isUserRegistered);
     if (isUserRegistered) {
       const username = await PostFactory.methods.users(accounts[0]).call();
       localStorage.setItem('username', username);

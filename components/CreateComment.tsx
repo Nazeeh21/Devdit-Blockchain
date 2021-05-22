@@ -21,8 +21,8 @@ const CreateComment: React.FC<{}> = ({}) => {
       <Formik
         initialValues={{ text: '' }}
         onSubmit={async (values) => {
-          console.log('creating comments');
-          console.log(values);
+          // console.log('creating comments');
+          // console.log(values);
           if(!localStorage.getItem('username')  || !localStorage.getItem('isUserRegistered')) {
             router.replace('/register?next=' + router.asPath);
           }
