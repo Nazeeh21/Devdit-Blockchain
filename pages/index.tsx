@@ -51,7 +51,7 @@ const Home = ({ posts, postAddresses }: HomeProps) => {
             return (<Flex mb={2} key={index} p={5} shadow='md' borderWidth='1px'>
               <Box>
                 {/* {console.log(post)} */}
-                <NextLink href='/post/[id]' as={`/post/${postAddresses && postAddresses[0]}`}>
+                <NextLink href='/post/[id]' as={`/post/${postAddresses && postAddresses[index]}`}>
                     <Link>
                       <Heading fontSize='xl'>{post[1]}</Heading>
                     </Link>
@@ -118,7 +118,7 @@ Home.getInitialProps = async () => {
     })
   );
 
-  console.log('posts: ', posts);
+  // console.log('posts: ', posts);
   return { posts, postAddresses };
 };
 
