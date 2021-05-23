@@ -190,13 +190,13 @@ const abi= [
   }
 ]
 const instance = () => { 
-  return new web3.eth.Contract(abi, '0x27E7647e646063F00fd45Db310c08F8AfdC46B5F');
+  return new web3.eth.Contract(abi, '0x00fbC8C74E7cff17b996AF1D087FD19D8aBf79D7');
 }
 
-export default new web3.eth.Contract(PostFactory.abi, '0x27E7647e646063F00fd45Db310c08F8AfdC46B5F');
+export default new web3.eth.Contract(PostFactory.abi, '0x00fbC8C74E7cff17b996AF1D087FD19D8aBf79D7');
 
 // const provider = new ethers.getDefaultProvider(`https://rinkeby.infura.io/v3/99cadf7c5b144101b79a4ceb8c8fb2dd`);
 
-// const postFactory = new ethers.Contract('0x27E7647e646063F00fd45Db310c08F8AfdC46B5F', PostFactory.abi, provider);
+// const postFactory = new ethers.Contract('0x00fbC8C74E7cff17b996AF1D087FD19D8aBf79D7', PostFactory.abi, provider);
 
 // export default postFactory;

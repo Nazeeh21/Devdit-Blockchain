@@ -3,13 +3,13 @@ import React from 'react';
 // import PostContract from '../ethereum/Post';
 import { Wrapper } from './Wrapper';
 import { Comment } from '../utils/types';
+import { LikeUnlike } from './LikeUnlike';
 
 interface CommentsProps {
   comments: Comment[] | undefined;
 }
 
 const Comments: React.FC<CommentsProps> = ({ comments }) => {
-
   if (comments!.length === 0) {
     return (
       <Wrapper>
@@ -26,11 +26,21 @@ const Comments: React.FC<CommentsProps> = ({ comments }) => {
       </Heading>
       <Stack mt={8}>
         {comments!.map((comment, index) => (
-          <Flex key={index} p={5} shadow='md' borderWidth='1px'>
+          <Flex
+            key={index}
+            p={5}
+            shadow='md'
+            borderWidth='1px'
+            justifyContent='space-between'
+            alignItems='center'
+          >
             <Box>
               {/* {console.log(comment)} */}
               <Text>{comment[1]}</Text>
               <Text mt={4}>Posted by: {comment[0]}</Text>
+            </Box>
+            <Box>
+              <LikeUnlike hasLiked={comment[3]} clickHandler={() => {}} />
             </Box>
           </Flex>
         ))}

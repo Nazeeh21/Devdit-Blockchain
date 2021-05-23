@@ -111,6 +111,15 @@ contract Post {
         }
     }
     
+    function vottedPost(address user) public view returns(bool) {
+        return voters[user];
+    }
+    
+    function vottedComment(uint index, address user) public view returns(bool) {
+        Comment storage comment = comments[index];
+        return comment.voters[user];
+    }
+    
     function voteComment(uint commentIndex) public {
         Comment storage comment = comments[commentIndex];
         
@@ -130,13 +139,13 @@ contract Post {
         delete comments[index];
     }
     
-    function getPostSummary() public view returns(string memory, string memory, string memory, uint, uint) {
-        return (username, title, body, votes, comments.length);
+    function getPostSummary() public view returns(string memory, string memory, string memory, uint, uint, bool) {
+        return (username, title, body, votes, comments.length, voters[msg.sender]);
     }
     
-    function getCommentSummary(uint commentIndex) public view returns(string memory, string memory, uint) {
+    function getCommentSummary(uint commentIndex) public view returns(string memory, string memory, uint, bool) {
         Comment storage comment = comments[commentIndex];
-        return (comment.username, comment.text, comment.votes);
+        return (comment.username, comment.text, comment.votes, comment.voters[msg.sender]);
     }
     
     function getCommentsCount() public view returns(uint) {

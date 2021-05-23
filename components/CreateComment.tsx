@@ -2,7 +2,6 @@ import { Button } from '@chakra-ui/button';
 import { Box, Heading } from '@chakra-ui/layout';
 import { Form, Formik } from 'formik';
 import React from 'react';
-// import { useIsAuth } from '../utils/useIsAuth';
 import { InputField } from './InputField';
 import PostContract from '../ethereum/Post';
 import { useRouter } from 'next/dist/client/router';
@@ -33,7 +32,7 @@ const CreateComment: React.FC<{}> = ({}) => {
             .createComment(values.text, localStorage.getItem('username'))
             .send({ from: accounts[0] });
 
-            router.replace(router.asPath);
+            router.reload();
         }}
       >
         {({ isSubmitting }) => (
