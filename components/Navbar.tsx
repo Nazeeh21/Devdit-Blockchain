@@ -44,20 +44,25 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
   }, []);
 
   const loginHandler = async () => {
-    // @ts-ignore
-    let accounts = await web3.eth.getAccounts();
-    // console.log(accounts[0]);
-    const isUserRegistered = await PostFactory.methods
-      .isUserRegistered(accounts[0])
-      .call();
-    // console.log('isUserRegistered: ', isUserRegistered);
-    if (isUserRegistered) {
-      const username = await PostFactory.methods.users(accounts[0]).call();
-      localStorage.setItem('username', username);
-      localStorage.setItem('isUserRegistered', isUserRegistered);
-      router.reload();
-    } else {
-      router.push('/register');
+    try {
+      // @ts-ignore
+      let accounts = await web3.eth.getAccounts();
+      // console.log(accounts[0]);
+      const isUserRegistered = await PostFactory.methods
+        .isUserRegistered(accounts[0])
+        .call();
+      // console.log('isUserRegistered: ', isUserRegistered);
+      if (isUserRegistered) {
+        const username = await PostFactory.methods.users(accounts[0]).call();
+        localStorage.setItem('username', username);
+        localStorage.setItem('isUserRegistered', isUserRegistered);
+        router.reload();
+      } else {
+        router.push('/register');
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Error while loggin in');
     }
   };
   let body = null;

@@ -16,6 +16,8 @@ const Home = ({}) => {
   const [postAddresses, setPostAddresses] = useState<String[]>([]);
   const [postLikes, setPostLikes] = useState<Boolean[]>([]);
 
+  const [loadingVotePost, setLoadingPost] = useState<boolean[]>([]);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -27,17 +29,17 @@ const Home = ({}) => {
 
       const postAddresses = await PostFactory.methods.getDeployedPosts().call();
       setPostAddresses(postAddresses);
-
+      const loadingState: boolean[] = [];
       const fetchedPosts = await Promise.all(
         postAddresses.map((address: any) => {
           const post = PostContract(address);
+          loadingState.push(false);
           return post.methods.getPostSummary().call();
         })
       );
-
       // console.log(typeof fetchedPosts);
       console.log(fetchedPosts);
-
+      setLoadingPost(loadingState);
       // @ts-ignore
       setPosts(fetchedPosts);
 
@@ -59,22 +61,38 @@ const Home = ({}) => {
         console.log('getPostLikes: ', getPostLikes);
       }
     }
-    getAccounts();
+    try {
+      getAccounts();
+    } catch (e) {
+      console.log(e);
+      alert('Error while fetching posts');
+    }
   }, []);
 
-  const likePost = async (postAddress: String) => {
+  const likePost = async (postAddress: String, index: number) => {
     if (
       !localStorage.getItem('username') ||
       !localStorage.getItem('isUserRegistered')
     ) {
       router.replace('/register?next=' + router.asPath);
     }
+    let loadingStateArray = [...loadingVotePost];
+    loadingStateArray[index] = true;
+    setLoadingPost(loadingStateArray);
     // @ts-ignore
     const accounts = await web3.eth.getAccounts();
     const post = PostContract(postAddress);
 
-    await post.methods.votePost().send({ from: accounts[0] });
-    router.reload();
+    try {
+      await post.methods.votePost().send({ from: accounts[0] });
+      loadingStateArray[index] = false;
+      setLoadingPost(loadingStateArray);
+      router.reload();
+    } catch (e) {
+      console.log(e);
+      loadingStateArray[index] = false;
+      setLoadingPost(loadingStateArray);
+    }
   };
 
   return (
@@ -116,9 +134,22 @@ const Home = ({}) => {
                     </Box>
                     <Box>
                       <LikeUnlike
+                        isLoading={loadingVotePost[index]}
+                        // isLoading={true}
                         hasLiked={postLikes[index]}
                         clickHandler={() => {
-                          likePost(postAddresses[index]);
+                          let anyPostVoteIsLoading = false;
+
+                          loadingVotePost.map((element) => {
+                            if (element) {
+                              anyPostVoteIsLoading = true;
+                            }
+                          });
+                          if (!anyPostVoteIsLoading) {
+                            likePost(postAddresses[index], index);
+                          } else {
+                            alert('Cant perform 2 transactions simultaneously');
+                          }
                         }}
                       />
                       <Text textAlign='center'>{post[3]}</Text>

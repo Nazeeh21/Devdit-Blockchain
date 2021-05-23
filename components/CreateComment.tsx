@@ -22,17 +22,25 @@ const CreateComment: React.FC<{}> = ({}) => {
         onSubmit={async (values) => {
           // console.log('creating comments');
           // console.log(values);
-          if(!localStorage.getItem('username')  || !localStorage.getItem('isUserRegistered')) {
+          if (
+            !localStorage.getItem('username') ||
+            !localStorage.getItem('isUserRegistered')
+          ) {
             router.replace('/register?next=' + router.asPath);
           }
-          const post = PostContract(address);
-          // @ts-ignore
-          const accounts = await web3.eth.getAccounts();
-          await post.methods
-            .createComment(values.text, localStorage.getItem('username'))
-            .send({ from: accounts[0] });
+          try {
+            const post = PostContract(address);
+            // @ts-ignore
+            const accounts = await web3.eth.getAccounts();
+            await post.methods
+              .createComment(values.text, localStorage.getItem('username'))
+              .send({ from: accounts[0] });
 
             router.reload();
+          } catch (e) {
+            console.log(e);
+            alert('Failed creating comment');
+          }
         }}
       >
         {({ isSubmitting }) => (

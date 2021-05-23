@@ -39,7 +39,12 @@ const Index = () => {
     };
 
     if (address) {
-      getComments();
+      try {
+        getComments();
+      } catch (e) {
+        console.log(e);
+        alert('Failed to fetch comments')
+      }
     }
   }, [address]);
   return (
