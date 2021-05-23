@@ -14,7 +14,7 @@ const CreateComment: React.FC<{}> = ({}) => {
   const address = router.query.id;
   // useIsAuth();
   return (
-    <Box mt={6}>
+    <Box mt={10}>
       <Heading fontSize='xl' mb={2}>
         Create Comment
       </Heading>
