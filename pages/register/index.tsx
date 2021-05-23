@@ -18,7 +18,7 @@ const index: React.FC<indexProps> = ({}) => {
     <Layout>
       <Formik
         initialValues={{ username: '' }}
-        onSubmit={async (values, { setErrors }) => {
+        onSubmit={async (values) => {
           // @ts-ignore
           const accounts = await web3.eth.getAccounts();
           console.log(accounts);
@@ -41,7 +41,8 @@ const index: React.FC<indexProps> = ({}) => {
               }
             }
           } catch (e) {
-            setErrors(e);
+            console.log(e);
+            alert('Error while registering');
           }
           // console.log(values.username);
         }}

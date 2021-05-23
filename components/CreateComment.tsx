@@ -2,7 +2,6 @@ import { Button } from '@chakra-ui/button';
 import { Box, Heading } from '@chakra-ui/layout';
 import { Form, Formik } from 'formik';
 import React from 'react';
-// import { useIsAuth } from '../utils/useIsAuth';
 import { InputField } from './InputField';
 import PostContract from '../ethereum/Post';
 import { useRouter } from 'next/dist/client/router';
@@ -23,17 +22,25 @@ const CreateComment: React.FC<{}> = ({}) => {
         onSubmit={async (values) => {
           // console.log('creating comments');
           // console.log(values);
-          if(!localStorage.getItem('username')  || !localStorage.getItem('isUserRegistered')) {
+          if (
+            !localStorage.getItem('username') ||
+            !localStorage.getItem('isUserRegistered')
+          ) {
             router.replace('/register?next=' + router.asPath);
           }
-          const post = PostContract(address);
-          // @ts-ignore
-          const accounts = await web3.eth.getAccounts();
-          await post.methods
-            .createComment(values.text, localStorage.getItem('username'))
-            .send({ from: accounts[0] });
+          try {
+            const post = PostContract(address);
+            // @ts-ignore
+            const accounts = await web3.eth.getAccounts();
+            await post.methods
+              .createComment(values.text, localStorage.getItem('username'))
+              .send({ from: accounts[0] });
 
-            router.replace(router.asPath);
+            router.reload();
+          } catch (e) {
+            console.log(e);
+            alert('Error while creating comment');
+          }
         }}
       >
         {({ isSubmitting }) => (

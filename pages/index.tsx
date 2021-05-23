@@ -8,11 +8,18 @@ import NextLink from 'next/link';
 import web3 from '../ethereum/web3';
 import { Post } from '../utils/types';
 import { Box, Flex, Heading, Link, Stack, Text } from '@chakra-ui/layout';
+import { LikeUnlike } from '../components/LikeUnlike';
+import { useRouter } from 'next/dist/client/router';
 
 const Home = ({}) => {
-  const [posts, setPosts] = useState<Post[] | null>(null)
-  const [postAddresses, setPostAddresses] = useState<String[]>([])
-  
+  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [postAddresses, setPostAddresses] = useState<String[]>([]);
+  const [postLikes, setPostLikes] = useState<Boolean[]>([]);
+
+  const [loadingVotePost, setLoadingPost] = useState<boolean[]>([]);
+
+  const router = useRouter();
+
   useEffect(() => {
     async function getAccounts() {
       const getDeployedPostsLength = await PostFactory.methods
@@ -22,22 +29,72 @@ const Home = ({}) => {
 
       const postAddresses = await PostFactory.methods.getDeployedPosts().call();
       setPostAddresses(postAddresses);
-
+      const loadingState: boolean[] = [];
       const fetchedPosts = await Promise.all(
         postAddresses.map((address: any) => {
           const post = PostContract(address);
+          loadingState.push(false);
           return post.methods.getPostSummary().call();
         })
       );
-
       // console.log(typeof fetchedPosts);
-      // console.log(fetchedPosts);
-      
+      console.log(fetchedPosts);
+      setLoadingPost(loadingState);
       // @ts-ignore
-      setPosts(fetchedPosts)
+      setPosts(fetchedPosts);
+
+      if (
+        localStorage.getItem('username') &&
+        localStorage.getItem('isUserRegistered')
+      ) {
+        // @ts-ignore
+        const accounts = await web3.eth.getAccounts();
+        const getPostLikes = await Promise.all(
+          postAddresses.map((address: any) => {
+            const post = PostContract(address);
+            return post.methods.vottedPost(accounts[0]).call();
+          })
+        );
+
+        // @ts-ignore
+        setPostLikes(getPostLikes);
+        console.log('getPostLikes: ', getPostLikes);
+      }
     }
-    getAccounts();
+    try {
+      getAccounts();
+    } catch (e) {
+      console.log(e);
+      alert('Error while fetching posts');
+    }
   }, []);
+
+  const likePost = async (postAddress: String, index: number) => {
+    if (
+      !localStorage.getItem('username') ||
+      !localStorage.getItem('isUserRegistered')
+    ) {
+      router.replace('/register?next=' + router.asPath);
+    }
+    let loadingStateArray = [...loadingVotePost];
+    loadingStateArray[index] = true;
+    setLoadingPost(loadingStateArray);
+    // @ts-ignore
+    const accounts = await web3.eth.getAccounts();
+    const post = PostContract(postAddress);
+
+    try {
+      await post.methods.votePost().send({ from: accounts[0] });
+      loadingStateArray[index] = false;
+      setLoadingPost(loadingStateArray);
+    } catch (e) {
+      console.log(e);
+      loadingStateArray[index] = false;
+      setLoadingPost(loadingStateArray);
+      alert('Error while voting a Post');
+    }
+    router.reload();
+  };
 
   return (
     <div className='container'>
@@ -49,25 +106,59 @@ const Home = ({}) => {
       <main>
         <Layout>
           <Stack mt={8} mb={2}>
-            {!posts ? <Heading m='auto'>Loading ...</Heading> : posts?.map((post, index) => {
-              return (
-                <Flex mb={2} key={index} p={5} shadow='md' borderWidth='1px'>
-                  <Box>
-                    {/* {console.log(post)} */}
-                    <NextLink
-                      href='/post/[id]'
-                      as={`/post/${postAddresses && postAddresses[index]}`}
-                    >
-                      <Link>
-                        <Heading fontSize='xl'>{post[1]}</Heading>
-                      </Link>
-                    </NextLink>
-                    <Text>Posted by: {post[0]}</Text>
-                    <Text mt={4}>{post[2]}</Text>
-                  </Box>
-                </Flex>
-              );
-            })}
+            {!posts ? (
+              <Heading m='auto'>Loading ...</Heading>
+            ) : (
+              posts?.map((post, index) => {
+                return (
+                  <Flex
+                    mb={2}
+                    key={index}
+                    p={5}
+                    shadow='md'
+                    borderWidth='1px'
+                    justifyContent='space-between'
+                    alignItems='center'
+                  >
+                    <Box>
+                      {console.log(post)}
+                      <NextLink
+                        href='/post/[id]'
+                        as={`/post/${postAddresses && postAddresses[index]}`}
+                      >
+                        <Link>
+                          <Heading fontSize='xl'>{post[1]}</Heading>
+                        </Link>
+                      </NextLink>
+                      <Text>Posted by: {post[0]}</Text>
+                      <Text mt={4}>{post[2]}</Text>
+                    </Box>
+                    <Box>
+                      <LikeUnlike
+                        isLoading={loadingVotePost[index]}
+                        // isLoading={true}
+                        hasLiked={postLikes[index]}
+                        clickHandler={() => {
+                          let anyPostVoteIsLoading = false;
+
+                          loadingVotePost.map((element) => {
+                            if (element) {
+                              anyPostVoteIsLoading = true;
+                            }
+                          });
+                          if (!anyPostVoteIsLoading) {
+                            likePost(postAddresses[index], index);
+                          } else {
+                            alert('Cant perform 2 transactions simultaneously');
+                          }
+                        }}
+                      />
+                      <Text textAlign='center'>{post[3]}</Text>
+                    </Box>
+                  </Flex>
+                );
+              })
+            )}
           </Stack>
         </Layout>
       </main>
@@ -100,32 +191,5 @@ const Home = ({}) => {
     </div>
   );
 };
-
-// Home.getInitialProps = async () => {
-//   const getDeployedPostsLength = await PostFactory.methods
-//     .getDeployedPostsLength()
-//     .call();
-//   console.log(getDeployedPostsLength);
-
-//   const postAddresses = await PostFactory.methods.getDeployedPosts().call();
-
-//   // const is_Registered = await PostFactory.methods.isRegistered().call();
-
-//   // console.log('is_Registered: ', is_Registered);
-
-//   // const username = await PostFactory.methods.getUsername().call();
-
-//   // console.log(username);
-
-//   const posts = await Promise.all(
-//     postAddresses.map((address: any) => {
-//       const post = PostContract(address);
-//       return post.methods.getPostSummary().call();
-//     })
-//   );
-
-//   // console.log('posts: ', posts);
-//   return { posts, postAddresses };
-// };
 
 export default Home;
