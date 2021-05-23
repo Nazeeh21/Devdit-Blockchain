@@ -1,13 +1,13 @@
 export type Post = {
-  '0': string;
-  '1': string;
-  '2': string;
-  '3': string;
-  '4': number;
+  '0': String;
+  '1': String;
+  '2': String;
+  '3': String;
+  '4': String;
 }
 
 export type Comment = {
-  0: string;
-  1: string;
-  2: string;
+  0: String;
+  1: String;
+  2: String;
 }

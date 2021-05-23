@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/layout';
 import React from 'react';
-import PostContract from '../ethereum/Post';
+// import PostContract from '../ethereum/Post';
 import { Wrapper } from './Wrapper';
 import { Comment } from '../utils/types';
 
@@ -40,24 +40,24 @@ const Comments: React.FC<CommentsProps> = ({ comments }) => {
 };
 
 // @ts-ignore
-Comments.getInitialProps = async (query: any) => {
-  const address = query.id;
-  // console.log('address: ', address);
+// Comments.getInitialProps = async (query: any) => {
+//   const address = query.id;
+//   // console.log('address: ', address);
 
-  const post = PostContract(address);
+//   const post = PostContract(address);
 
-  const commentsCount = await post.methods.getCommentsCount().call();
+//   const commentsCount = await post.methods.getCommentsCount().call();
 
-  const comments = Promise.all(
-    Array(+commentsCount)
-      // @ts-ignore
-      .fill()
-      .map((_, index) => {
-        return post.methods.getCommentSummary(index);
-      })
-  );
-  // console.log('comments: ', comments);
+//   const comments = Promise.all(
+//     Array(+commentsCount)
+//       // @ts-ignore
+//       .fill()
+//       .map((_, index) => {
+//         return post.methods.getCommentSummary(index);
+//       })
+//   );
+//   // console.log('comments: ', comments);
 
-  return { comments };
-};
+//   return { comments };
+// };
 export default Comments;
