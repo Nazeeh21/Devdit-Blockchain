@@ -36,6 +36,12 @@ export const useIsAuth = () => {
             }
           })
           .catch((e) => console.log(e));
+      } else {
+        if (typeof router.query.next === 'string') {
+          router.push(router.query.next);
+        } else {
+          router.push('/');
+        }
       }
     }
   }, []);

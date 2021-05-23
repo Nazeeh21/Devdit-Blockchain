@@ -39,7 +39,7 @@ const CreateComment: React.FC<{}> = ({}) => {
             router.reload();
           } catch (e) {
             console.log(e);
-            alert('Failed creating comment');
+            alert('Error while creating comment');
           }
         }}
       >

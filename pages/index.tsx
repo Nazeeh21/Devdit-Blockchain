@@ -87,12 +87,13 @@ const Home = ({}) => {
       await post.methods.votePost().send({ from: accounts[0] });
       loadingStateArray[index] = false;
       setLoadingPost(loadingStateArray);
-      router.reload();
     } catch (e) {
       console.log(e);
       loadingStateArray[index] = false;
       setLoadingPost(loadingStateArray);
+      alert('Error while voting a Post');
     }
+    router.reload();
   };
 
   return (

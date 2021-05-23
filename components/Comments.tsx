@@ -74,12 +74,13 @@ const Comments: React.FC<CommentsProps> = ({ comments }) => {
       await post.methods.voteComment(commentIndex).send({ from: accounts[0] });
       loadingStateArray[commentIndex] = false;
       setLoadingComment(loadingStateArray);
-      router.reload();
     } catch (e) {
       console.log(e);
       loadingStateArray[commentIndex] = false;
       setLoadingComment(loadingStateArray);
+      alert('Error while voting a comment');
     }
+    router.reload();
   };
 
   return (
