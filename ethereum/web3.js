@@ -9,7 +9,7 @@ if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
 } else {
   // We are on the server *OR* the user is not running metamask
   const provider = new Web3.providers.HttpProvider(
-    'https://rinkeby.infura.io/v3/99cadf7c5b144101b79a4ceb8c8fb2dd'
+    process.env.NEXT_PUBLIC_INFURA_URL
   );
 
   web3 = new Web3(provider);
