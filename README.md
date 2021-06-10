@@ -33,3 +33,5 @@
 ### Frontend deployed using [Versel](https://vercel.com/)
 
 ### Ethereum Smart Contract deployed on the Rinkeby Test network using Infura node.
+
+### User will need [MetaMask](https://metamask.io/) extension installed in order to Post, Comment and Like.
