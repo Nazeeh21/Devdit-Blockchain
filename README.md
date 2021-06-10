@@ -1,4 +1,4 @@
-# Devdit (https://devdit-blockchain.vercel.app/)
+# [Devdit](https://devdit-blockchain.vercel.app/)
 
 - Devdit is a decentralized platform which provides an environment for developers to post updates about the new teck stacks and to post developer's kindoff stuff.
 
@@ -30,7 +30,7 @@
 - `ChakraUI`
 - `Formik`
 
-### Frontend deployed using [Versel](https://vercel.com/)
+### Frontend deployed using [Vercel](https://vercel.com/)
 
 ### Ethereum Smart Contract deployed on the Rinkeby Test network using Infura node.
 
